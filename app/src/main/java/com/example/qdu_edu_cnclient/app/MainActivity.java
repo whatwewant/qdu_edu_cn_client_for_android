@@ -309,8 +309,8 @@ public class MainActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             // progressDialog.dismiss();
-            /* Just test
-            if (true) {
+            // Just test
+            /*if (true) {
                 Intent tintent = new Intent();
                 tintent.setClass(MainActivity.this, SuccessLogin.class);
                 startActivity(tintent);

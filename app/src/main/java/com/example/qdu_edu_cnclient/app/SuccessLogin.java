@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URI;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,6 +34,7 @@ public class SuccessLogin extends Activity {
     private Button signOutButton;
     private Button startVpnBtn;
     private Button startShadowsocksBtn;
+    private Button startSchoolNetBtn;
 
     private TextView ipView;
     private TextView timeView;
@@ -50,6 +53,7 @@ public class SuccessLogin extends Activity {
         signOutButton = (Button)findViewById(R.id.signOut);
         startVpnBtn = (Button)findViewById(R.id.startVpnBtn);
         startShadowsocksBtn = (Button)findViewById(R.id.shadowsocksBtn);
+        startSchoolNetBtn = (Button)findViewById(R.id.startSchoolNetBtn);
 
         ipView = (TextView)findViewById(R.id.ipView);
         timeView = (TextView)findViewById(R.id.timeView);
@@ -102,6 +106,54 @@ public class SuccessLogin extends Activity {
                 Intent intent = pm.getLaunchIntentForPackage("com.github.shadowsocks");
                 if (null == intent) {
                     Toast.makeText(SuccessLogin.this, "You never install shadowsocks.", Toast.LENGTH_LONG).show();
+                    new AlertDialog.Builder(SuccessLogin.this)
+                            .setTitle("Warning")
+                            .setMessage("Are you sure to download a shadowsocks client ?")
+                            .setPositiveButton("Do", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Uri uri = Uri.parse("https://github.com/whatwewant/qdu_edu_cn_client_for_android/raw/ssapp/ss.apk");
+                                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                                    startActivity(it);
+                                }
+                            })
+                            .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            }).show();
+                } else {
+                    startActivity(intent);
+                }
+            }
+        });
+
+        startSchoolNetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PackageManager pm = getPackageManager();
+
+                Intent intent = pm.getLaunchIntentForPackage("com.example.schoolnet.app");
+                if (null == intent) {
+                    Toast.makeText(SuccessLogin.this, "You never install SchoolNet.", Toast.LENGTH_LONG).show();
+                    new AlertDialog.Builder(SuccessLogin.this)
+                            .setTitle("Warning")
+                            .setMessage("Are you sure to download a SchoolNet client ?")
+                            .setPositiveButton("Do", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Uri uri = Uri.parse("https://github.com/whatwewant/MyAndroidStudioProjects/raw/master/SchoolNet/14-08-02/APK/app.apk");
+                                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                                    startActivity(it);
+                                }
+                            })
+                            .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            }).show();
                 } else {
                     startActivity(intent);
                 }
