@@ -309,6 +309,14 @@ public class MainActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             // progressDialog.dismiss();
+            /* Just test
+            if (true) {
+                Intent tintent = new Intent();
+                tintent.setClass(MainActivity.this, SuccessLogin.class);
+                startActivity(tintent);
+                return ;
+            }*/
+
             if (msg.what == -1) {
                 Toast.makeText(MainActivity.this, "用户名、密码不能为空", Toast.LENGTH_SHORT).show();
             } else {

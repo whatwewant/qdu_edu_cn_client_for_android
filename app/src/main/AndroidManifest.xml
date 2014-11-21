@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.qdu_edu_cnclient.app.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.qdu_edu_cnclient.app.SuccessLogin"
+            android:name=".SuccessLogin"
             android:label="@string/title_activity_success_login" >
         </activity>
     </application>

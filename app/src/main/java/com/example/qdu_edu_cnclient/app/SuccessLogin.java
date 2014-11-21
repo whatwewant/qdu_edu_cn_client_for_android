@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -28,6 +30,9 @@ public class SuccessLogin extends Activity {
     private static final String SIGNOUT_URL = "http://172.20.1.1/portal/logout.jsp?language=English&userip=null";
 
     private Button signOutButton;
+    private Button startVpnBtn;
+    private Button startShadowsocksBtn;
+
     private TextView ipView;
     private TextView timeView;
 
@@ -43,6 +48,9 @@ public class SuccessLogin extends Activity {
 
 
         signOutButton = (Button)findViewById(R.id.signOut);
+        startVpnBtn = (Button)findViewById(R.id.startVpnBtn);
+        startShadowsocksBtn = (Button)findViewById(R.id.shadowsocksBtn);
+
         ipView = (TextView)findViewById(R.id.ipView);
         timeView = (TextView)findViewById(R.id.timeView);
 
@@ -71,6 +79,32 @@ public class SuccessLogin extends Activity {
                                 dialogInterface.cancel();
                             }
                         }).show();
+            }
+        });
+
+        startVpnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent("android.net.vpn.SETTINGS");
+                if (null == intent) {
+                    Toast.makeText(SuccessLogin.this, "No VPN Settings Available.", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivity(intent);
+                }
+            }
+        });
+
+        startShadowsocksBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PackageManager pm = getPackageManager();
+
+                Intent intent = pm.getLaunchIntentForPackage("com.github.shadowsocks");
+                if (null == intent) {
+                    Toast.makeText(SuccessLogin.this, "You never install shadowsocks.", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivity(intent);
+                }
             }
         });
 

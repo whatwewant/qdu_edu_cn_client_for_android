@@ -51,5 +51,25 @@
         android:layout_above="@+id/ipView"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start VPN"
+        android:id="@+id/startVpnBtn"
+        android:layout_alignTop="@+id/signOut"
+        android:layout_marginTop="61dp"
+        android:layout_alignLeft="@+id/signOut"
+        android:layout_alignStart="@+id/signOut"
+        android:layout_toLeftOf="@+id/ipView" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Shadowsocks"
+        android:id="@+id/shadowsocksBtn"
+        android:layout_alignTop="@+id/startVpnBtn"
+        android:layout_alignRight="@+id/signOut"
+        android:layout_alignEnd="@+id/signOut" />
+
 
 </RelativeLayout>
