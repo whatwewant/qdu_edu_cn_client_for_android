@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
@@ -95,6 +96,7 @@ public class MySimpleHttp {
         httpGet.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
         httpClient = new DefaultHttpClient();
+        httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);
 
         httpResponse = httpClient.execute(httpGet);
 
@@ -153,6 +155,7 @@ public class MySimpleHttp {
         httpPost.setEntity(new UrlEncodedFormEntity(postParams, HTTP.UTF_8));
 
         httpClient = new DefaultHttpClient();
+        httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);
         httpResponse = httpClient.execute(httpPost);
 
         if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {

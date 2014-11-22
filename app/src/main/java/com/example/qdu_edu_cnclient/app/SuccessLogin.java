@@ -216,6 +216,13 @@ public class SuccessLogin extends Activity {
         public void handleMessage(Message msg) {
             // System.out.println("in SignOutHandler: " + (String)msg.obj);
             String returnMessage = (String)msg.obj;
+
+            if (null == returnMessage) {
+                Toast.makeText(SuccessLogin.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                return ;
+            }
+
+
             Toast.makeText(SuccessLogin.this, returnMessage, Toast.LENGTH_SHORT).show();
             onBackPressed();
         }

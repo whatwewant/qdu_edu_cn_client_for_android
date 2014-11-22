@@ -33,10 +33,13 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Service.DatabaseHelper;
 import Service.Login;
 import Service.MyNetworkInfo;
+import Service.TimeSet;
 
 
 public class MainActivity extends Activity {
@@ -50,6 +53,7 @@ public class MainActivity extends Activity {
 
     private Handler networkHandler;
     private Handler hadLoginedHandler;
+    private Handler monitorButtonsEnable;
 
     private ProgressDialog progressDialog;
 
@@ -85,6 +89,7 @@ public class MainActivity extends Activity {
 
         networkHandler = new NetworkHandler();
         hadLoginedHandler = new HadLoginHandler();
+        monitorButtonsEnable = new MonitorButtonsEnable();
 
         loginButton.setOnClickListener(new LoginListener());
 
@@ -139,26 +144,20 @@ public class MainActivity extends Activity {
             usernameView.setEnabled(false);
             passwordView.setEnabled(false);
             isSavePwdView.setEnabled(false);
-        } else {
-            // 网络接通后，检查是否已经
-            /*
-            new Thread() {
-                @Override
-                public void run() {
-                    Message msg = new Message();
-                    try {
-                        AnalyseLoginReturnResult analyser = new AnalyseLoginReturnResult();
-                        boolean connectBaidu = analyser.HadLoginedByBaidu();
-                        // System.out.println("OnCreate test Connect to Baidu: " + connectBaidu);
-                        msg.obj = connectBaidu;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    hadLoginedHandler.sendMessage(msg);
-                }
-            }.start();
-            */
         }
+
+        // take time
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                MyNetworkInfo myNetworkInfo = new MyNetworkInfo();
+                Message msg = new Message();
+                msg.obj = myNetworkInfo.networkOn(getApplicationContext());
+                monitorButtonsEnable.sendMessage(msg);
+            }
+        };
+        Timer timer = new Timer(true);
+        timer.schedule(task, 1000, 3000);
 
         // 启动时载入数据
         Cursor loadData = sqliteDatabase.query(TABLE_USER, new String[]{"username", "password", "save"}, "save=? and active=?", new String[]{"1","1"}, null, null, null);
@@ -185,6 +184,34 @@ public class MainActivity extends Activity {
             passwordView.setText(null);
         }
         loadData.close();
+    }
+
+    public class MonitorButtonsEnable extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (msg == null) {
+                Toast.makeText(MainActivity.this, "Cannot Get Messages.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            boolean networkState = (Boolean) msg.obj;
+            if (!networkState) {
+                // Toast.makeText(MainActivity.this, "网络未连接", Toast.LENGTH_SHORT).show();
+                loginButton.setText("未连接网络");
+                loginButton.setEnabled(false);
+                usernameView.setEnabled(false);
+                passwordView.setEnabled(false);
+                isSavePwdView.setEnabled(false);
+            } else {
+                // Toast.makeText(MainActivity.this, "网络已连接", Toast.LENGTH_SHORT).show();
+                loginButton.setText("登入");
+                loginButton.setEnabled(true);
+                usernameView.setEnabled(true);
+                passwordView.setEnabled(true);
+                isSavePwdView.setEnabled(true);
+            }
+        }
     }
 
     @Override
@@ -254,7 +281,7 @@ public class MainActivity extends Activity {
             Cursor cursor = sqliteDatabase.query(TABLE_USER, new String[]{"password", "save", "active"}, "username=?", new String[]{usernameContent}, null, null, null);
 
             // insert or update
-            System.out.println("cursor exists ? " + cursor.getCount());
+            // System.out.println("cursor exists ? " + cursor.getCount());
             if (cursor.getCount() == 0 ) {
                 // insert
                 sqliteDatabase.insert(TABLE_USER, null, values);
@@ -275,7 +302,6 @@ public class MainActivity extends Activity {
             System.out.println("issavepwd: " + issavepwd);*/
 
             //System
-
             Message msg = new Message();
             if (usernameContent.isEmpty() || passwordContent.isEmpty()) {
                 msg.what = -1;
