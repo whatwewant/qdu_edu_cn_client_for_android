@@ -322,6 +322,12 @@ public class MainActivity extends Activity {
             } else {
                 String [] serverMessage = {"Logged in successfully.", "已经登录", "E63022: 在线用户数量限制。", "E63032: 用户密码错误，您还可以重试9次（如果您连续输入错误的密码10次后，将被加入黑名单，第二天才能解除，或者请联系管理员）。"};
                 String returnMessage = (String)msg.obj;
+
+                if (null == returnMessage) {
+                    Toast.makeText(MainActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
+
                 if ( returnMessage.equals(serverMessage[0])) {
                     Toast.makeText(MainActivity.this, "登入成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
