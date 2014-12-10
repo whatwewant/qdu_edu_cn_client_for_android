@@ -21,9 +21,10 @@ public class CheckForUpdate {
 
     public static int big = 1;
     public static int release = 0;
-    public static int bug = 8;
+    public static int bug = 9;
 
-    public static String QDU_EDU_CN_VERSION = "1.0.8";
+    public static String QDU_EDU_CN_VERSION = "1.0.9";
+    private static String newVersion;
 
     public static String get_newest_version() {
         try {
@@ -40,7 +41,7 @@ public class CheckForUpdate {
     }
 
     public static String check() {
-        String newVersion = get_newest_version();
+        newVersion = get_newest_version();
 
         try {
             int bigRelease = Integer.parseInt(newVersion.split("\\.")[0]);
@@ -60,7 +61,7 @@ public class CheckForUpdate {
     }
 
     public static File update() {
-        final String fileName = "qdu_edu_cn_update.apk";
+        final String fileName = "qdu_edu_cn_update_"+ newVersion +".apk";
         File tmpFile = new File("/sdcard/update");
         if (!tmpFile.exists()) {
             tmpFile.mkdir();
