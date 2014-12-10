@@ -48,8 +48,8 @@ public class CheckForUpdate {
             int smallBug = Integer.parseInt(newVersion.split("\\.")[2]);
 
             if (big > bigRelease ||
-                    (big==bigRelease && release>releaseNum) ||
-                    (big==bigRelease && release==releaseNum && bug>smallBug)) {
+                    (bigRelease==big && releaseNum>release) ||
+                    (big==bigRelease && release==releaseNum && smallBug>bug)) {
                 return ("检测到新版本: Version " + newVersion);
             }
             return "已是最新版本Version: " + QDU_EDU_CN_VERSION + ", 无需更新";
