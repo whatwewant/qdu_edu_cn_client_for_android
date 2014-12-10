@@ -21,9 +21,9 @@ public class CheckForUpdate {
 
     public static int big = 1;
     public static int release = 0;
-    public static int bug = 7;
+    public static int bug = 8;
 
-    public static String QDU_EDU_CN_VERSION = "1.0.7";
+    public static String QDU_EDU_CN_VERSION = "1.0.8";
 
     public static String get_newest_version() {
         try {
@@ -52,7 +52,7 @@ public class CheckForUpdate {
                     (big==bigRelease && release==releaseNum && smallBug>bug)) {
                 return ("检测到新版本: Version " + newVersion);
             }
-            return "已是最新版本Version: " + newVersion + ", 无需更新";
+            return "已是最新版本Version: " + QDU_EDU_CN_VERSION + ", 无需更新";
         }
         catch (Exception e) {
             return "检测失败";
