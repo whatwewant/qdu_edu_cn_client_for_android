@@ -21,9 +21,9 @@ public class CheckForUpdate {
 
     public static int big = 1;
     public static int release = 0;
-    public static int bug = 5;
+    public static int bug = 6;
 
-    public static String QDU_EDU_CN_VERSION = "1.0.5";
+    public static String QDU_EDU_CN_VERSION = "1.0.6";
 
     public static String get_newest_version() {
         try {
