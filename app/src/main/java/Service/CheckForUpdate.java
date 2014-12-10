@@ -28,8 +28,7 @@ public class CheckForUpdate {
     public static String get_newest_version() {
         try {
             String httpResult = MySimpleHttp.get_static(VERSION_URL);
-            System.out.println("VERSION: " + httpResult);
-            String current_reg = "public final static String QDU_EDU_CN_VERSION = \"(.+)\";";
+            String current_reg = "public static String QDU_EDU_CN_VERSION = \"(.+)\";";
             String regexResult = MyRegularExpresion.regexHtml(httpResult, current_reg);
             if (regexResult == null)
                 return "不存在";
@@ -42,6 +41,7 @@ public class CheckForUpdate {
 
     public static String check() {
         String newVersion = get_newest_version();
+        System.out.print("vvvvv: " + newVersion);
 
         try {
             int bigRelease = Integer.parseInt(newVersion.split(".")[0]);
