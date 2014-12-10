@@ -19,7 +19,11 @@ public class CheckForUpdate {
     private static String APK_URL = "https://github.com/whatwewant/qdu_edu_cn_client_for_android/raw/master/app/app.apk";
     private static String VERSION_URL = "https://raw.githubusercontent.com/whatwewant/qdu_edu_cn_client_for_android/master/app/src/main/java/Service/CheckForUpdate.java";
 
-    public final static String QDU_EDU_CN_VERSION = "1.0.2";
+    public static int big = 1;
+    public static int release = 0;
+    public static int bug = 4;
+
+    public static String QDU_EDU_CN_VERSION = "1.0.4";
 
     public static String get_newest_version() {
         try {
@@ -38,10 +42,22 @@ public class CheckForUpdate {
 
     public static String check() {
         String newVersion = get_newest_version();
-        if (! newVersion.equals(QDU_EDU_CN_VERSION)) {
-            return ("检测到新版本: Version " + newVersion);
+
+        try {
+            int bigRelease = Integer.parseInt(newVersion.split(".")[0]);
+            int releaseNum = Integer.parseInt(newVersion.split(".")[1]);
+            int smallBug = Integer.parseInt(newVersion.split(".")[2]);
+
+            if (big > bigRelease ||
+                    (big==bigRelease && release>releaseNum) ||
+                    (big==bigRelease && release==releaseNum && bug>smallBug)) {
+                return ("检测到新版本: Version " + newVersion);
+            }
+            return "已是最新版本Version: " + QDU_EDU_CN_VERSION + ", 无需更新";
         }
-        return "已是最新版本Version: " + newVersion + ", 无需更新";
+        catch (Exception e) {
+            return "检测失败";
+        }
     }
 
     public static File update() {
