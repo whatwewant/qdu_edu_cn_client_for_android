@@ -32,7 +32,7 @@ public class CheckForUpdate {
             String regexResult = MyRegularExpresion.regexHtml(httpResult, current_reg);
             if (regexResult == null)
                 return "不存在";
-            return regexResult.replaceAll("public final static String QDU_EDU_CN_VERSION = \"", "")
+            return regexResult.replaceAll("public static String QDU_EDU_CN_VERSION = \"", "")
                               .replaceAll("\";", "");
         } catch (IOException e) {
             return "奔溃了";
@@ -41,12 +41,12 @@ public class CheckForUpdate {
 
     public static String check() {
         String newVersion = get_newest_version();
-        System.out.print("vvvvv: " + newVersion);
+        Log.d("vvvvv", newVersion);
 
         try {
-            int bigRelease = Integer.parseInt(newVersion.split(".")[0]);
-            int releaseNum = Integer.parseInt(newVersion.split(".")[1]);
-            int smallBug = Integer.parseInt(newVersion.split(".")[2]);
+            int bigRelease = Integer.parseInt(newVersion.split("\\.")[0]);
+            int releaseNum = Integer.parseInt(newVersion.split("\\.")[1]);
+            int smallBug = Integer.parseInt(newVersion.split("\\.")[2]);
 
             if (big > bigRelease ||
                     (big==bigRelease && release>releaseNum) ||
