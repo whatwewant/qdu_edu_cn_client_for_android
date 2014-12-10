@@ -19,7 +19,7 @@ public class CheckForUpdate {
     private static String APK_URL = "https://github.com/whatwewant/qdu_edu_cn_client_for_android/raw/master/app/app.apk";
     private static String VERSION_URL = "https://raw.githubusercontent.com/whatwewant/qdu_edu_cn_client_for_android/master/app/src/main/java/Service/CheckForUpdate.java";
 
-    public final static String QDU_EDU_CN_VERSION = "1.0.1";
+    public final static String QDU_EDU_CN_VERSION = "1.0.2";
 
     public static String get_newest_version() {
         try {
