@@ -16,8 +16,8 @@ import java.net.URL;
  * Created by potter on 14-12-10.
  */
 public class CheckForUpdate {
-    private static String APK_URL = "http://192.168.1.150:8001/app.apk"; // "https://github.com/whatwewant/qdu_edu_cn_client_for_android/raw/master/app/app.apk";
-    private static String VERSION_URL = "http://192.168.1.150:8002/CheckForUpdate.java"; // "http://192.168.1.150:8001/CheckForUpdate.java";
+    private static String APK_URL = "https://github.com/whatwewant/qdu_edu_cn_client_for_android/raw/master/app/app.apk";
+    private static String VERSION_URL = "https://raw.githubusercontent.com/whatwewant/qdu_edu_cn_client_for_android/master/app/src/main/java/Service/CheckForUpdate.java";
 
     public final static String QDU_EDU_CN_VERSION = "1.0.1";
 
