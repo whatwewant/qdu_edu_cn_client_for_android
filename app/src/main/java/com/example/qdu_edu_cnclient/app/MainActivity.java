@@ -254,7 +254,7 @@ public class MainActivity extends Activity {
                 if (message == null) {
                     Toast.makeText(MainActivity.this, "检查失败,软件出错", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+
 
                 if (message.contains("检测到新版本")) {
                     new AlertDialog.Builder(MainActivity.this)
@@ -273,6 +273,8 @@ public class MainActivity extends Activity {
                                     Toast.makeText(MainActivity.this, "取消更新", Toast.LENGTH_SHORT).show();
                                 }
                             }).show();
+                } else {
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             } else if (msg.what == 2) {
                 installAPK((File)msg.obj);
