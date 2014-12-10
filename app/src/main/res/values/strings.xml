@@ -6,5 +6,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main_activity2">MainActivity2</string>
     <string name="title_activity_success_login">SuccessLogin</string>
+    <string name="remember_code">记住密码</string>
+    <string name="login">登入</string>
+    <string name="check_for_update">检查更新</string>
+    <string name="qdu_edu_cn_version">1.0.1</string>
 
 </resources>

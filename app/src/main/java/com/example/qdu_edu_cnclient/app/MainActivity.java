@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +43,15 @@ import Service.DatabaseHelper;
 import Service.Login;
 import Service.MyNetworkInfo;
 import Service.TimeSet;
+import Service.CheckForUpdate;
 
 
 public class MainActivity extends Activity {
+
+    private final String VERSION = CheckForUpdate.QDU_EDU_CN_VERSION;
+
+    private TextView versionTextView;
+    private Handler checkForUpdateHandler;
 
     private AutoCompleteTextView usernameView;
     private EditText passwordView;
@@ -80,6 +89,10 @@ public class MainActivity extends Activity {
         // 创建数据库存储用户名密码
         dbHelper = new DatabaseHelper(this, DATABASE_NAME);
         sqliteDatabase = dbHelper.getReadableDatabase();
+
+        versionTextView = (TextView)findViewById(R.id.version);
+        versionTextView.setText("Version " + VERSION);
+        checkForUpdateHandler = new CheckForUpdateHandler();
 
         usernameView = (AutoCompleteTextView)findViewById(R.id.username);
         passwordView = (EditText)findViewById(R.id.password);
@@ -144,6 +157,7 @@ public class MainActivity extends Activity {
             usernameView.setEnabled(false);
             passwordView.setEnabled(false);
             isSavePwdView.setEnabled(false);
+            versionTextView.setEnabled(false);
         }
 
         // take time
@@ -184,6 +198,86 @@ public class MainActivity extends Activity {
             passwordView.setText(null);
         }
         loadData.close();
+
+        versionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("QDU_EDU_CN Client")
+                        .setMessage("检查更新?")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(MainActivity.this, "检查更新中...", Toast.LENGTH_SHORT).show();
+                                new CheckForUpdateThread(1).start();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(MainActivity.this, "取消检查更新", Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+            }
+        });
+    }
+
+    public class CheckForUpdateThread extends Thread {
+        private int choice = 1;
+
+        public CheckForUpdateThread() {}
+
+        public CheckForUpdateThread(int value) {
+            choice = value;
+        }
+
+        @Override
+        public void run() {
+            Message msg = new Message();
+            msg.what = choice;
+            if (choice == 1) {// 检测更新
+                msg.obj = CheckForUpdate.check();
+            }
+            else if (choice == 2) {
+                msg.obj = CheckForUpdate.update();
+            }
+            checkForUpdateHandler.sendMessage(msg);
+        }
+    }
+
+    public class CheckForUpdateHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (msg.what == 1) {
+                String message = (String)msg.obj;
+                if (message == null) {
+                    Toast.makeText(MainActivity.this, "检查失败,软件出错", Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                if (message.contains("检测到新版本")) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("QDU_EDU_CN Client")
+                            .setMessage("更新")
+                            .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(MainActivity.this, "更新中...", Toast.LENGTH_SHORT).show();
+                                    new CheckForUpdateThread(2).start();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(MainActivity.this, "取消更新", Toast.LENGTH_SHORT).show();
+                                }
+                            }).show();
+                }
+            } else if (msg.what == 2) {
+                installAPK((File)msg.obj);
+            }
+        }
     }
 
     public class MonitorButtonsEnable extends Handler {
@@ -203,6 +297,7 @@ public class MainActivity extends Activity {
                 usernameView.setEnabled(false);
                 passwordView.setEnabled(false);
                 isSavePwdView.setEnabled(false);
+                versionTextView.setEnabled(false);
             } else {
                 // Toast.makeText(MainActivity.this, "网络已连接", Toast.LENGTH_SHORT).show();
                 loginButton.setText("登入");
@@ -210,6 +305,7 @@ public class MainActivity extends Activity {
                 usernameView.setEnabled(true);
                 passwordView.setEnabled(true);
                 isSavePwdView.setEnabled(true);
+                versionTextView.setEnabled(true);
             }
         }
     }
@@ -350,7 +446,7 @@ public class MainActivity extends Activity {
                 String returnMessage = (String)msg.obj;
 
                 if (null == returnMessage) {
-                    Toast.makeText(MainActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "请检查是否连接到Wlan: QDU_EDU_CN", Toast.LENGTH_SHORT).show();
                     return ;
                 }
 
@@ -375,6 +471,17 @@ public class MainActivity extends Activity {
                 }
             }
         }
+    }
+
+    public void installAPK(File apk) {
+        // TODO Auto-generated method stub
+        Log.e("OpenFile", apk.getName());
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(apk),
+                "application/vnd.android.package-archive");
+        startActivity(intent);
     }
 
     @Override

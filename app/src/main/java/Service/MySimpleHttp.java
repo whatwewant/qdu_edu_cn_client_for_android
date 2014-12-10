@@ -132,6 +132,28 @@ public class MySimpleHttp {
         return "网络请求异常，请检查网络";
     }
 
+    public static String get_static(String urlString) throws IOException {
+        HttpGet httpGet = new HttpGet(urlString);
+
+        httpGet.addHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+        //httpGet.addHeader("Accept-Encoding", "gzip,deflate,sdch");
+        //httpGet.addHeader("Accept-Language", "en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4");
+        httpGet.addHeader("Connection", "keep-alive");
+        httpGet.addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19");
+        httpGet.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);
+
+        HttpResponse httpResponse = httpClient.execute(httpGet);
+
+        if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            return EntityUtils.toString(httpResponse.getEntity());
+        }
+
+        return "网络请求异常，请检查网络";
+    }
+
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     public String post(String url, ArrayList<NameValuePair> postParams) throws IOException {
         httpPost = new HttpPost(url);

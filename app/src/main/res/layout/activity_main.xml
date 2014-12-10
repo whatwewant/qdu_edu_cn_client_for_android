@@ -48,7 +48,7 @@
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="记住密码"
+        android:text="@string/remember_code"
         android:id="@+id/isSavePwd"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
@@ -60,12 +60,20 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登入"
+        android:text="@string/login"
         android:id="@+id/login"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/isSavePwd"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qdu_edu_cn_version"
+        android:id="@+id/version"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
