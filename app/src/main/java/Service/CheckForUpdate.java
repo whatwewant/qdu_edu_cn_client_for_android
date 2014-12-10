@@ -27,7 +27,7 @@ public class CheckForUpdate {
 
     public static String get_newest_version() {
         try {
-            String httpResult = MySimpleHttp.get_static(VERSION_URL);
+            String httpResult = new MySimpleHttp().get(VERSION_URL);
             String current_reg = "public static String QDU_EDU_CN_VERSION = \"(.+)\";";
             String regexResult = MyRegularExpresion.regexHtml(httpResult, current_reg);
             if (regexResult == null)
@@ -47,12 +47,12 @@ public class CheckForUpdate {
             int releaseNum = Integer.parseInt(newVersion.split("\\.")[1]);
             int smallBug = Integer.parseInt(newVersion.split("\\.")[2]);
 
-            if (big > bigRelease ||
+            if (bigRelease > big ||
                     (bigRelease==big && releaseNum>release) ||
                     (big==bigRelease && release==releaseNum && smallBug>bug)) {
                 return ("检测到新版本: Version " + newVersion);
             }
-            return "已是最新版本Version: " + QDU_EDU_CN_VERSION + ", 无需更新";
+            return "已是最新版本Version: " + newVersion + ", 无需更新";
         }
         catch (Exception e) {
             return "检测失败";

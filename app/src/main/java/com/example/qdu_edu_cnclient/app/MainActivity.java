@@ -259,7 +259,7 @@ public class MainActivity extends Activity {
                 if (message.contains("检测到新版本")) {
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("QDU_EDU_CN Client")
-                            .setMessage("更新")
+                            .setMessage(message + ", 是否更新?")
                             .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
