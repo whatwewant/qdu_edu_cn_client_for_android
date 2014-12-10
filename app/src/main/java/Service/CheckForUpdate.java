@@ -21,9 +21,9 @@ public class CheckForUpdate {
 
     public static int big = 1;
     public static int release = 0;
-    public static int bug = 4;
+    public static int bug = 5;
 
-    public static String QDU_EDU_CN_VERSION = "1.0.4";
+    public static String QDU_EDU_CN_VERSION = "1.0.5";
 
     public static String get_newest_version() {
         try {
@@ -41,7 +41,6 @@ public class CheckForUpdate {
 
     public static String check() {
         String newVersion = get_newest_version();
-        Log.d("vvvvv", newVersion);
 
         try {
             int bigRelease = Integer.parseInt(newVersion.split("\\.")[0]);
