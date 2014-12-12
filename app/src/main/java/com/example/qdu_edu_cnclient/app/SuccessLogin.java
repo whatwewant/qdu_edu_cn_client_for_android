@@ -134,16 +134,16 @@ public class SuccessLogin extends Activity {
             public void onClick(View view) {
                 PackageManager pm = getPackageManager();
 
-                Intent intent = pm.getLaunchIntentForPackage("com.example.schoolnet.app");
+                Intent intent = pm.getLaunchIntentForPackage("com.smith.cole.domportal");
                 if (null == intent) {
-                    Toast.makeText(SuccessLogin.this, "You never install SchoolNet.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SuccessLogin.this, "You never install DomPortal.", Toast.LENGTH_LONG).show();
                     new AlertDialog.Builder(SuccessLogin.this)
                             .setTitle("Warning")
-                            .setMessage("Are you sure to download a SchoolNet client ?")
+                            .setMessage("Are you sure to download a DomPortal ?")
                             .setPositiveButton("Do", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Uri uri = Uri.parse("https://github.com/whatwewant/MyAndroidStudioProjects/raw/master/SchoolNet/14-08-02/APK/app.apk");
+                                    Uri uri = Uri.parse("https://github.com/whatwewant/DomPortal/raw/master/app/app-release.apk");
                                     Intent it = new Intent(Intent.ACTION_VIEW, uri);
                                     startActivity(it);
                                 }
